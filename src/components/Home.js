@@ -22,8 +22,6 @@ class Home extends React.Component {
         dataArr: result.data,
       })
       console.log(this.state.dataArr)
-      console.log( this.props.auth0.isAuthenticated)
-      this.props.auth0.isAuthenticated && console.log(this.props.auth0.user.email)
     })
   }
 
@@ -32,7 +30,7 @@ class Home extends React.Component {
     const conflig = {
       method: 'post',
       baseURL: 'http://localhost:8000',
-      url: `/addFav/${this.props.auth0.user.email}`,
+      url: `/addFav?email=${this.props.auth0.user.email}`,
       data: {
         title: obj.title,
         desc: obj.description,
@@ -41,7 +39,7 @@ class Home extends React.Component {
       }
     }
     axios(conflig).then(result => {
-      console.log("Added")
+      console.log("add: ", result.data)
     })
   }
  

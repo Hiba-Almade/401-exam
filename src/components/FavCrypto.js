@@ -18,13 +18,13 @@ class FavCrypto extends React.Component {
     const conflig = {
       method: 'get',
       baseURL: 'http://localhost:8000',
-      url: `/fav/${this.props.auth0.user.email}`
+      url: `/fav?email=${this.props.auth0.user.email}`
     }
     axios(conflig).then(result => {
       this.setState({
         dataArr: result.data,
       })
-      console.log('fav')
+      console.log("fav ", result.data)
     })
   }
 
@@ -32,8 +32,7 @@ delete=(id)=>{
   const conflig = {
     method: 'delete',
     baseURL: 'http://localhost:8000',
-    url: `/fav/${this.props.auth0.user.email}`,
-data:{id:id}
+    url: `/delete/${id}?email=${this.props.auth0.user.email}`,
   }
   axios(conflig).then(result => {
     this.setState({
@@ -60,7 +59,7 @@ handleOpen=()=>{
       <>
       Fav
            {this.state.dataArr.map(item => {
-          return (<Card style={{ width: '18rem' }}>
+          return (<><Card style={{ width: '18rem' }}>
             <Card.Img variant="top" src={item.image_url}alt=" " />
             <Card.Body>
               <Card.Title>{item.title}: {item.toUSD}</Card.Title>
@@ -72,13 +71,15 @@ handleOpen=()=>{
               <Button variant="primary" onClick={this.showModel}>Edit</Button>
             </Card.Body>
           </Card>
+            <ModelEdit show = {this.state.show} handleClose = {this.handleClose} id ={item._id}/>
+            </>
           )
         })}
 
-        <ModelEdit show = {this.state.show} handleClose = {this.handleClose}/>
+      
       </>
     )
   }
 }
 
-export default FavCrypto;
+export default withAuth0(FavCrypto);
